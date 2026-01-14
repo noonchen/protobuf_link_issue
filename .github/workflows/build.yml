@@ -56,15 +56,15 @@ jobs:
           path: ${{ github.workspace }}/install
           key: deps-${{ matrix.ver }}
 
-      # - name: Add protoc to PATH
-      #   shell: bash
-      #   run: |
-      #     echo "$GITHUB_WORKSPACE/install/bin" >> $GITHUB_PATH
+      - name: Add protoc to PATH
+        shell: bash
+        run: |
+          echo "$GITHUB_WORKSPACE/install/bin" >> $GITHUB_PATH
 
-      # - name: Gen Src From .proto
-      #   shell: bash
-      #   run: |
-      #     protoc --cpp_out=. -I. test.proto
+      - name: Gen Src From .proto
+        shell: bash
+        run: |
+          protoc --cpp_out=. -I. test.proto
 
       - name: CMake Build
         shell: bash
