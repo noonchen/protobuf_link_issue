@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-fault-injection:
+  build-lib:
     runs-on: Windows-latest
     strategy:
       fail-fast: true
@@ -71,4 +71,4 @@ jobs:
         run: |
           mkdir build; cd build
           cmake .. -DCMAKE_PREFIX_PATH="$GITHUB_WORKSPACE/install"
-          cmake --build . --config RelWithDebInfo --target install
+          cmake --build . --config RelWithDebInfo
