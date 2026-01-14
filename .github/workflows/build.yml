@@ -24,7 +24,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Restore Deps
+        id: restore-deps-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ github.workspace }}/install
+          key: deps-${{ matrix.ver }}
+
       - name: Setup Protobuf
+        if: steps.restore-deps-cache.outputs.cache-hit != 'true'
         shell: bash
         run: |
           git clone --depth 1 -b ${{ matrix.ver }} --recurse-submodules https://github.com/protocolbuffers/protobuf.git
@@ -40,6 +48,13 @@ jobs:
             -DABSL_PROPAGATE_CXX_STD=ON
           cmake --build protobuf/build --parallel 16 --config Release
           cmake --install protobuf/build --prefix "$GITHUB_WORKSPACE/install"
+
+      - name: Cache Deps
+        if: steps.restore-deps-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ github.workspace }}/install
+          key: deps-${{ matrix.ver }}
 
       # - name: Add protoc to PATH
       #   shell: bash
